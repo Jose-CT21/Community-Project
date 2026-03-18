@@ -1,0 +1,200 @@
+.property-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.property-card:hover .property-card-img-wrapper {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.property-card:hover .property-card-img {
+  transform: scale(1.05); /* Slight zoom within the box */
+}
+
+/* Image wrapper */
+.property-card-img-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 66.66%; /* 3:2 ratio */
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-bg-secondary);
+  flex-shrink: 0;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.property-card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+/* Favorite button */
+.fav-btn {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 2;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast);
+}
+
+.fav-btn:hover {
+  transform: scale(1.15);
+}
+
+.heart-icon {
+  width: 24px;
+  height: 24px;
+  fill: rgba(0, 0, 0, 0.35);
+  stroke: #fff;
+  stroke-width: 2;
+  transition: fill var(--transition-fast), stroke var(--transition-fast);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+
+.fav-btn.active .heart-icon {
+  fill: var(--color-brand);
+  stroke: var(--color-brand);
+}
+
+/* Photo navigation */
+.photo-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: var(--radius-full);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity var(--transition-fast), background var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.property-card-img-wrapper:hover .photo-nav {
+  opacity: 1;
+}
+
+.photo-nav.prev { left: var(--space-3); }
+.photo-nav.next { right: var(--space-3); }
+.photo-nav:hover { background: #fff; }
+
+/* Dots */
+.photo-dots {
+  position: absolute;
+  bottom: var(--space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  z-index: 2;
+}
+
+.photo-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.6);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.photo-dot.active {
+  background: #fff;
+  transform: scale(1.2);
+}
+
+/* Superhost badge */
+.superhost-badge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 2;
+  background: rgba(255,255,255,0.85); /* Glass */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Card info */
+.property-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.property-card-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.property-card-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+  flex: 1;
+}
+
+.property-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  flex-shrink: 0;
+}
+
+.property-card-type {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.property-card-meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.property-card-price {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.property-card-price strong {
+  font-weight: 700;
+}
+
+.night-label {
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
