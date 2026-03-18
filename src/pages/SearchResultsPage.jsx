@@ -136,8 +136,8 @@ export default function SearchResultsPage() {
           </p>
           {filtered.length > 0 ? (
             <div className="properties-grid">
-              {filtered.map((property) => (
-                <PropertyCard key={property.id} property={property} />
+              {filtered.map((property, index) => (
+                <PropertyCard key={property.id} property={property} priority={index < 4} />
               ))}
             </div>
           ) : (

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import "./PropertyCard.css";
 
-export default function PropertyCard({ property }) {
+export default function PropertyCard({ property, priority = false }) {
   const { favorites, toggleFavorite, formatPrice } = useApp();
   const [currentPhoto, setCurrentPhoto] = useState(0);
   const isFav = favorites.includes(property.id);
@@ -34,7 +34,9 @@ export default function PropertyCard({ property }) {
           src={property.photos[currentPhoto]}
           alt={property.title}
           className="property-card-img"
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
+          decoding={priority ? "sync" : "async"}
+          fetchpriority={priority ? "high" : "auto"}
           onError={(e) => {
             e.target.src = `https://picsum.photos/seed/${property.id}-${currentPhoto}/400/300`;
           }}

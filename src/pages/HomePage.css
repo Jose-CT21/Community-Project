@@ -182,6 +182,13 @@
   padding-bottom: 4px;
 }
 
+@media (min-width: 1024px) {
+  .categories-scroll {
+    justify-content: center;
+    gap: var(--space-6);
+  }
+}
+
 .categories-scroll::-webkit-scrollbar {
   display: none;
 }

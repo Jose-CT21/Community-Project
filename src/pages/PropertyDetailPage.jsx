@@ -117,7 +117,9 @@ export default function PropertyDetailPage() {
             <img
               src={property.photos[mainPhoto]}
               alt={property.title}
-              loading="lazy"
+              fetchpriority="high"
+              loading="eager"
+              decoding="sync"
               onError={(e) => { e.target.src = `https://picsum.photos/seed/${id}-main/800/500`; }}
             />
           </div>
@@ -131,7 +133,8 @@ export default function PropertyDetailPage() {
                 <img
                   src={photo}
                   alt={`Photo ${i + 1}`}
-                  loading="lazy"
+                  loading="eager"
+                  decoding="async"
                   onError={(e) => { e.target.src = `https://picsum.photos/seed/${id}-${i}/400/300`; }}
                 />
               </div>
@@ -168,6 +171,7 @@ export default function PropertyDetailPage() {
                 src={property.photos[mainPhoto]} 
                 alt="Fullscreen view" 
                 loading="lazy"
+                decoding="async"
                 style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
                 onError={(e) => { e.target.src = `https://picsum.photos/seed/${id}-${mainPhoto}/1200/800`; }}
               />
@@ -201,6 +205,7 @@ export default function PropertyDetailPage() {
                   alt={property.host?.name}
                   className="host-avatar-detail"
                   loading="lazy"
+                  decoding="async"
                   onError={(e) => { e.target.src = `https://i.pravatar.cc/56?u=${property.host?.id}`; }}
                 />
                 {property.host?.isSuperhost && <span className="host-star">⭐</span>}

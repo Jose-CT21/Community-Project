@@ -228,7 +228,7 @@ export default function HomePage() {
             <div className="properties-grid reveal-stagger">
               {filteredProperties.map((property, index) => (
                 <div key={property.id} className="reveal" style={{ "--reveal-index": index }}>
-                  <PropertyCard property={property} />
+                  <PropertyCard property={property} priority={index < 4} />
                 </div>
               ))}
             </div>

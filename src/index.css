@@ -363,7 +363,7 @@ ul, ol {
 /* ==================== GRIDS ==================== */
 .properties-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-6);
 }
 
@@ -391,7 +391,7 @@ ul, ol {
     padding: 0 var(--space-4);
   }
   .properties-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: var(--space-4);
   }
   .page-wrapper {
