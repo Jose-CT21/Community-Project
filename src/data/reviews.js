@@ -1,4 +1,5 @@
 export const reviews = [
+  // Original Reviews
   {
     id: "rev-001",
     propertyId: "prop-001",
@@ -7,8 +8,7 @@ export const reviews = [
     guestAvatar: "/images/host3.jpg",
     date: "2024-11-15",
     rating: 5,
-    comment:
-      "Absolutely breathtaking! The villa exceeded every expectation. Waking up to the ocean view every morning was surreal. Carlos is an amazing host — very responsive and helpful. We'll definitely be back!",
+    comment: "Absolutely breathtaking! The villa exceeded every expectation. Waking up to the ocean view every morning was surreal. Carlos is an amazing host — very responsive and helpful. We'll definitely be back!",
   },
   {
     id: "rev-002",
@@ -18,8 +18,7 @@ export const reviews = [
     guestAvatar: "/images/host5.jpg",
     date: "2024-10-22",
     rating: 5,
-    comment:
-      "Perfect beachfront villa. The pool is stunning and the beach access is right there. We had 8 people and everyone had plenty of space. Highly recommend!",
+    comment: "Perfect beachfront villa. The pool is stunning and the beach access is right there. We had 8 people and everyone had plenty of space. Highly recommend!",
   },
   {
     id: "rev-003",
@@ -29,8 +28,7 @@ export const reviews = [
     guestAvatar: "/images/host3.jpg",
     date: "2024-09-05",
     rating: 5,
-    comment:
-      "The cloud forest is magical. Loved falling asleep to the sound of rain and birds. Ana was super welcoming. The cabin is cozy and has everything you need.",
+    comment: "The cloud forest is magical. Loved falling asleep to the sound of rain and birds. Ana was super welcoming. The cabin is cozy and has everything you need.",
   },
   {
     id: "rev-004",
@@ -40,8 +38,7 @@ export const reviews = [
     guestAvatar: "/images/host1.jpg",
     date: "2024-12-01",
     rating: 4,
-    comment:
-      "Great location and stylish space. Perfect for a business trip. The gym access was a huge plus. Minor issue with the AC but Diego resolved it quickly.",
+    comment: "Great location and stylish space. Perfect for a business trip. The gym access was a huge plus. Minor issue with the AC but Diego resolved it quickly.",
   },
   {
     id: "rev-005",
@@ -51,8 +48,7 @@ export const reviews = [
     guestAvatar: "/images/host2.jpg",
     date: "2024-11-28",
     rating: 5,
-    comment:
-      "This treehouse is genuinely magical. We watched a family of monkeys from the bed at sunrise. Lucia thought of every detail. Truly a once-in-a-lifetime experience.",
+    comment: "This treehouse is genuinely magical. We watched a family of monkeys from the bed at sunrise. Lucia thought of every detail. Truly a once-in-a-lifetime experience.",
   },
   {
     id: "rev-006",
@@ -62,8 +58,7 @@ export const reviews = [
     guestAvatar: "/images/host5.jpg",
     date: "2024-12-10",
     rating: 5,
-    comment:
-      "The dome was out of this world. The stargazing at night through the ceiling panels was unforgettable. Volcano views every morning with breakfast. 10/10.",
+    comment: "The dome was out of this world. The stargazing at night through the ceiling panels was unforgettable. Volcano views every morning with breakfast. 10/10.",
   },
   {
     id: "rev-007",
@@ -73,7 +68,93 @@ export const reviews = [
     guestAvatar: "/images/host1.jpg",
     date: "2024-08-17",
     rating: 5,
-    comment:
-      "Best surf spot ever. The bungalow is simple but has everything you need. We surfed every morning and watched sunsets from the porch. Perfect vibes.",
+    comment: "Best surf spot ever. The bungalow is simple but has everything you need. We surfed every morning and watched sunsets from the porch. Perfect vibes.",
   },
+
+  // Generated Reviews (8 per property for all 12 properties)
+  ...[
+    "prop-001", "prop-002", "prop-003", "prop-004", "prop-005", "prop-006",
+    "prop-007", "prop-008", "prop-009", "prop-010", "prop-011", "prop-012"
+  ].flatMap((pId, pIdx) => [
+    {
+      id: `rev-gen-${pIdx}-1`,
+      propertyId: pId,
+      userId: "user-gen-1",
+      guestName: "Sofia Benitez",
+      guestAvatar: "https://i.pravatar.cc/150?u=sofia",
+      date: "2024-12-20",
+      rating: 5,
+      comment: "Un lugar increíble para desconectar. La limpieza fue impecable y el anfitrión muy atento.",
+    },
+    {
+      id: `rev-gen-${pIdx}-2`,
+      propertyId: pId,
+      userId: "user-gen-2",
+      guestName: "Liam Johnson",
+      guestAvatar: "https://i.pravatar.cc/150?u=liam",
+      date: "2024-11-05",
+      rating: 5,
+      comment: "Great stay! The location is perfect and the vibes are just what we needed.",
+    },
+    {
+      id: `rev-gen-${pIdx}-3`,
+      propertyId: pId,
+      userId: "user-gen-3",
+      guestName: "Mateo Garcia",
+      guestAvatar: "https://i.pravatar.cc/150?u=mateo",
+      date: "2024-10-15",
+      rating: 4,
+      comment: "Bellisimo lugar, super recomendado para familias. Volveremos pronto sin duda.",
+    },
+    {
+      id: `rev-gen-${pIdx}-4`,
+      propertyId: pId,
+      userId: "user-gen-4",
+      guestName: "Isabella Rossi",
+      guestAvatar: "https://i.pravatar.cc/150?u=isabella",
+      date: "2024-09-25",
+      rating: 5,
+      comment: "Fantastic experience. Everything was exactly as described. 5 stars!",
+    },
+    {
+      id: `rev-gen-${pIdx}-5`,
+      propertyId: pId,
+      userId: "user-gen-5",
+      guestName: "Julian Schmidt",
+      guestAvatar: "https://i.pravatar.cc/150?u=julian",
+      date: "2024-08-10",
+      rating: 4,
+      comment: "The view is even better in person. Clean, cozy, and very well located.",
+    },
+    {
+      id: `rev-gen-${pIdx}-6`,
+      propertyId: pId,
+      userId: "user-gen-6",
+      guestName: "Valentina Ortiz",
+      guestAvatar: "https://i.pravatar.cc/150?u=valentina",
+      date: "2024-07-15",
+      rating: 5,
+      comment: "Estadía maravillosa. La decoración es exquisita y la cama muy cómoda.",
+    },
+    {
+      id: `rev-gen-${pIdx}-7`,
+      propertyId: pId,
+      userId: "user-gen-7",
+      guestName: "Lucas Silva",
+      guestAvatar: "https://i.pravatar.cc/150?u=lucas",
+      date: "2024-06-20",
+      rating: 5,
+      comment: "Perfecto para un fin de semana romántico. Muy privado y silencioso.",
+    },
+    {
+      id: `rev-gen-${pIdx}-8`,
+      propertyId: pId,
+      userId: "user-gen-8",
+      guestName: "Emma Wilson",
+      guestAvatar: "https://i.pravatar.cc/150?u=emma",
+      date: "2024-05-30",
+      rating: 4,
+      comment: "Very modern and clean. The check-in process was smooth and easy.",
+    }
+  ])
 ];

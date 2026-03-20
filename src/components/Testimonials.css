@@ -1,6 +1,6 @@
 .testimonials-section {
   padding: var(--space-8) 0;
-  background-color: var(--color-brand-light); /* Soft peach background */
+  background-color: var(--color-brand-bg); /* Soft, subtle background to harmonize better */
   text-align: center;
   position: relative;
   overflow: hidden;

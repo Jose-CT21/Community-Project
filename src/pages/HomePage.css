@@ -127,7 +127,7 @@
 .hero-search-btn:hover {
   background: var(--color-brand-dark);
   transform: scale(1.02);
-  box-shadow: 0 4px 16px rgba(142, 99, 78, 0.25);
+  box-shadow: 0 4px 16px rgba(255, 56, 92, 0.4);
 }
 
 /* Hero stats */

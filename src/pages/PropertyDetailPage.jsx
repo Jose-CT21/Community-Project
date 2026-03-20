@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { properties } from "../data/properties";
 import { reviews } from "../data/reviews";
@@ -27,6 +27,39 @@ export default function PropertyDetailPage() {
   const [showAllAmenities, setShowAllAmenities] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showLightbox, setShowLightbox] = useState(false);
+  const [showReviewsModal, setShowReviewsModal] = useState(false);
+  const [activeMobilePhoto, setActiveMobilePhoto] = useState(0);
+
+  // Mouse-drag scrolling for reviews slider on desktop
+  const sliderRef = useRef(null);
+  const isDragging = useRef(false);
+  const dragStartX = useRef(0);
+  const dragScrollLeft = useRef(0);
+
+  const handleSliderMouseDown = (e) => {
+    isDragging.current = true;
+    sliderRef.current.classList.add('is-dragging');
+    dragStartX.current = e.pageX - sliderRef.current.offsetLeft;
+    dragScrollLeft.current = sliderRef.current.scrollLeft;
+  };
+
+  const handleSliderMouseLeave = () => {
+    isDragging.current = false;
+    sliderRef.current?.classList.remove('is-dragging');
+  };
+
+  const handleSliderMouseUp = () => {
+    isDragging.current = false;
+    sliderRef.current?.classList.remove('is-dragging');
+  };
+
+  const handleSliderMouseMove = (e) => {
+    if (!isDragging.current) return;
+    e.preventDefault();
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    const walk = (x - dragStartX.current) * 1.5;
+    sliderRef.current.scrollLeft = dragScrollLeft.current - walk;
+  };
   const [dateRange, setDateRange] = useState([
     {
       startDate: new Date(),
@@ -43,6 +76,13 @@ export default function PropertyDetailPage() {
     } else {
       setCheckout("");
     }
+  };
+
+  const handleMobilePhotoScroll = (e) => {
+    const scrollLeft = e.target.scrollLeft;
+    const width = e.target.offsetWidth;
+    const newIndex = Math.round(scrollLeft / width);
+    setActiveMobilePhoto(newIndex);
   };
 
   if (!property) {
@@ -123,8 +163,8 @@ export default function PropertyDetailPage() {
           </div>
         </div>
 
-        {/* Photo Gallery - Restructured to 1+4 Grid */}
-        <div className="photo-gallery">
+        {/* Photo Gallery - Restructured to 1+4 Grid (Desktop) */}
+        <div className="photo-gallery desktop-only">
           {/* Main Photo (0) */}
           <div className="photo-main" onClick={() => setShowLightbox(true)} style={{ cursor: "pointer" }}>
             <img
@@ -162,6 +202,22 @@ export default function PropertyDetailPage() {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Swipeable Photo Gallery (Mobile) */}
+        <div className="photo-slider-mobile mobile-only" onScroll={handleMobilePhotoScroll}>
+          {property.photos.map((photo, i) => (
+            <div key={i} className="mobile-slide" onClick={() => { setMainPhoto(i); setShowLightbox(true); }}>
+              <img
+                src={getOptimizedUrl(photo, 800)}
+                alt={`${property.title} - ${i + 1}`}
+                loading={i === 0 ? "eager" : "lazy"}
+              />
+            </div>
+          ))}
+          <div className="mobile-photo-badge">
+            {activeMobilePhoto + 1} / {property.photos.length}
           </div>
         </div>
 
@@ -297,29 +353,46 @@ export default function PropertyDetailPage() {
                 <h3 className="detail-section-title">⭐ {property.rating} · {property.reviewCount} reviews</h3>
               </div>
               {propertyReviews.length > 0 ? (
-                <div className="reviews-grid">
-                  {propertyReviews.map((review) => (
-                    <div key={review.id} className="review-card">
-                      <div className="review-author">
-                        <img
-                          src={review.guestAvatar}
-                          alt={review.guestName}
-                          className="review-avatar"
-                          loading="lazy"
-                          onError={(e) => { e.target.src = `https://i.pravatar.cc/40?u=${review.userId}`; }}
-                        />
-                        <div>
-                          <p className="review-name">{review.guestName}</p>
-                          <p className="review-date">{new Date(review.date).toLocaleDateString("en-US", { month: "long", year: "numeric" })}</p>
+                <>
+                  <div className="reviews-slider-wrapper">
+                    <div
+                      className="reviews-slider"
+                      ref={sliderRef}
+                      onMouseDown={handleSliderMouseDown}
+                      onMouseLeave={handleSliderMouseLeave}
+                      onMouseUp={handleSliderMouseUp}
+                      onMouseMove={handleSliderMouseMove}
+                    >
+                      {propertyReviews.map((review) => (
+                        <div key={review.id} className="review-card slider-card">
+                          <div className="review-author">
+                            <img
+                              src={review.guestAvatar}
+                              alt={review.guestName}
+                              className="review-avatar"
+                              loading="lazy"
+                              onError={(e) => { e.target.src = `https://i.pravatar.cc/40?u=${review.userId}`; }}
+                            />
+                            <div>
+                              <p className="review-name">{review.guestName}</p>
+                              <p className="review-date">{new Date(review.date).toLocaleDateString("es-ES", { month: "long", year: "numeric" })}</p>
+                            </div>
+                          </div>
+                          <div className="review-stars">
+                            {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
+                          </div>
+                          <p className="review-text">{review.comment}</p>
                         </div>
-                      </div>
-                      <div className="review-stars">
-                        {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
-                      </div>
-                      <p className="review-text">{review.comment}</p>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                  <button 
+                    className="btn btn-outline show-all-reviews-btn mt-4" 
+                    onClick={() => setShowReviewsModal(true)}
+                  >
+                    Mostrar {propertyReviews.length} reseñas
+                  </button>
+                </>
               ) : (
                 <p className="text-muted">No reviews yet. Be the first!</p>
               )}
@@ -416,6 +489,118 @@ export default function PropertyDetailPage() {
           </aside>
         </div>
       </div>
+
+      {/* Mobile Fixed Bottom Bar */}
+      <div className="mobile-bottom-bar mobile-only">
+        <div className="mobile-price-section">
+          <div className="mobile-price-row">
+            <span className="mobile-price-val">{formatPrice(property.price)}</span>
+            <span className="mobile-price-label">/ night</span>
+          </div>
+          <div className="mobile-dates-label underline" onClick={() => setShowCalendar(true)}>
+            {checkin ? `${format(new Date(checkin), "MMM d")} - ${format(new Date(checkout || checkin), "MMM d")}` : "Add dates"}
+          </div>
+        </div>
+        <button className="btn btn-brand mobile-reserve-btn" onClick={handleReserve}>
+          Reserve
+        </button>
+      </div>
+
+      {/* Reviews Side Panel */}
+      {showReviewsModal && (
+        <div className="modal-overlay" onClick={() => setShowReviewsModal(false)}>
+          <div className="modal-box" onClick={e => e.stopPropagation()}>
+            <div className="sticky-header">
+              <button className="close-btn" onClick={() => setShowReviewsModal(false)}>←</button>
+            </div>
+
+            <div className="modal-body">
+              {/* Big rating hero */}
+              <div className="modal-rating-hero">
+                <div className="modal-rating-big">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  {property.rating}
+                </div>
+                <button className="modal-reviews-link">¿Cómo funcionan las reseñas?</button>
+              </div>
+
+              {/* Rating distribution bars */}
+              <div className="rating-breakdown">
+                {[5, 4, 3, 2, 1].map(n => {
+                  const count = propertyReviews.filter(r => r.rating === n).length;
+                  const pct = propertyReviews.length > 0 ? (count / propertyReviews.length) * 100 : 0;
+                  return (
+                    <>
+                      <span key={`lbl-${n}`} className="rating-breakdown-label">{n}</span>
+                      <div key={`bar-${n}`} className="rating-bar-track">
+                        <div className="rating-bar-fill" style={{ width: `${pct}%` }} />
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+
+              {/* Category scores */}
+              <div className="category-scores">
+                {[
+                  { name: 'Limpieza', icon: '🧹', score: (property.rating - 0.1).toFixed(1) },
+                  { name: 'Exactitud', icon: '✓', score: (property.rating - 0.1).toFixed(1) },
+                  { name: 'Check-in', icon: '🔑', score: (property.rating).toFixed(1) },
+                  { name: 'Comunicación', icon: '💬', score: (property.rating).toFixed(1) },
+                  { name: 'Ubicación', icon: '🗺', score: (property.rating + 0.1).toFixed(1) },
+                  { name: 'Precio', icon: '🏷', score: (property.rating + 0.1).toFixed(1) },
+                ].map(cat => (
+                  <div key={cat.name} className="category-score-item">
+                    <span className="category-score-name">{cat.name}</span>
+                    <span className="category-score-val">{cat.score}</span>
+                    <span className="category-score-icon">{cat.icon}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Highlight tags */}
+              <div className="review-highlights">
+                <h3 className="review-highlights-title">Las reseñas de los huéspedes mencionan</h3>
+                <div className="review-tags">
+                  {['🛌 Comodidades', '🧹 Limpieza', '🌄 Vista', '📍 Ubicación', '😊 Anfitrión'].map(tag => (
+                    <button key={tag} className="review-tag">
+                      <span className="review-tag-emoji">{tag.split(' ')[0]}</span>
+                      <span>{tag.split(' ').slice(1).join(' ')}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Reviews list */}
+              <div className="reviews-panel-list">
+                <div className="reviews-panel-count">{propertyReviews.length} reseñas</div>
+                {propertyReviews.map(review => (
+                  <div key={review.id} className="review-card vertical-card">
+                    <div className="review-author">
+                      <img
+                        src={review.guestAvatar}
+                        alt={review.guestName}
+                        className="review-avatar"
+                        loading="lazy"
+                        onError={e => { e.target.src = `https://i.pravatar.cc/40?u=${review.userId}`; }}
+                      />
+                      <div>
+                        <p className="review-name">{review.guestName}</p>
+                        <p className="review-date">{new Date(review.date).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>
+                      </div>
+                    </div>
+                    <div className="review-stars" style={{ color: 'var(--color-text-primary)', letterSpacing: 2, fontSize: '0.8rem', margin: '4px 0' }}>
+                      {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                    </div>
+                    <p className="review-text">{review.comment}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
