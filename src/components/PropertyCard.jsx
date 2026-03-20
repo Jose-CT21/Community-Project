@@ -47,23 +47,45 @@ export default function PropertyCard({ property, priority = false }) {
     toggleFavorite(property.id);
   };
 
+  const getOptimizedUrl = (url, width = 600) => {
+    if (!url) return "";
+    if (url.includes("unsplash.com")) {
+      // Add Unsplash optimization parameters
+      const baseUrl = url.split("?")[0];
+      return `${baseUrl}?w=${width}&q=80&fm=webp&auto=format&fit=crop`;
+    }
+    if (url.includes("picsum.photos")) {
+      return url.replace(/\/\d+\/\d+$/, `/${width}/${Math.round(width * 0.75)}`);
+    }
+    return url;
+  };
+
   return (
     <Link to={`/property/${property.id}`} className="property-card">
       {/* Image area */}
       <div className="property-card-img-wrapper">
-        {property.photos.map((photo, i) => (
-          <img
-            key={i}
-            src={photo}
-            alt={`${property.title} - ${i + 1}`}
-            className={`property-card-img ${i === currentPhoto ? "active" : ""}`}
-            loading={priority && i === 0 ? "eager" : "lazy"}
-            decoding={priority && i === 0 ? "sync" : "async"}
-            onError={(e) => {
-              e.target.src = `https://picsum.photos/seed/${property.id}-${i}/400/300`;
-            }}
-          />
-        ))}
+        {property.photos.map((photo, i) => {
+          // Optimization: Only render current, previous and next for the carousel
+          const isNear = Math.abs(i - currentPhoto) <= 1 || 
+                         (currentPhoto === 0 && i === property.photos.length - 1) ||
+                         (currentPhoto === property.photos.length - 1 && i === 0);
+          
+          if (!isNear && i !== 0) return null; // Always keep first for LCP/Stability
+
+          return (
+            <img
+              key={i}
+              src={getOptimizedUrl(photo)}
+              alt={`${property.title} - ${i + 1}`}
+              className={`property-card-img ${i === currentPhoto ? "active" : ""}`}
+              loading={priority && i === 0 ? "eager" : "lazy"}
+              decoding={priority && i === 0 ? "sync" : "async"}
+              onError={(e) => {
+                e.target.src = `https://picsum.photos/seed/${property.id}-${i}/600/450`;
+              }}
+            />
+          );
+        })}
 
         {/* Favorite button */}
         <button

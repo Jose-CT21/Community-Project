@@ -78,6 +78,18 @@ export default function PropertyDetailPage() {
 
   const displayedAmenities = showAllAmenities ? property.amenities : property.amenities.slice(0, 6);
 
+  const getOptimizedUrl = (url, width = 800) => {
+    if (!url) return "";
+    if (url.includes("unsplash.com")) {
+      const baseUrl = url.split("?")[0];
+      return `${baseUrl}?w=${width}&q=80&fm=webp&auto=format&fit=crop`;
+    }
+    if (url.includes("picsum.photos")) {
+      return url.replace(/\/\d+\/\d+$/, `/${width}/${Math.round(width * 0.6)}`);
+    }
+    return url;
+  };
+
   return (
     <div className="page-wrapper">
       <div className="detail-container">
@@ -111,39 +123,45 @@ export default function PropertyDetailPage() {
           </div>
         </div>
 
-        {/* Photo Gallery */}
+        {/* Photo Gallery - Restructured to 1+4 Grid */}
         <div className="photo-gallery">
+          {/* Main Photo (0) */}
           <div className="photo-main" onClick={() => setShowLightbox(true)} style={{ cursor: "pointer" }}>
             <img
-              src={property.photos[mainPhoto]}
+              src={getOptimizedUrl(property.photos[0], 1200)}
               alt={property.title}
               fetchpriority="high"
               loading="eager"
               decoding="sync"
-              onError={(e) => { e.target.src = `https://picsum.photos/seed/${id}-main/800/500`; }}
+              onError={(e) => { e.target.src = `https://picsum.photos/seed/${id}-main/1200/800`; }}
             />
           </div>
-          <div className="photo-thumbs">
-            {property.photos.slice(0, 4).map((photo, i) => (
-              <div
-                key={i}
-                className={`photo-thumb ${i === mainPhoto ? "active" : ""}`}
-                onClick={() => setMainPhoto(i)}
-              >
-                <img
-                  src={photo}
-                  alt={`Photo ${i + 1}`}
-                  loading="eager"
-                  decoding="async"
-                  onError={(e) => { e.target.src = `https://picsum.photos/seed/${id}-${i}/400/300`; }}
-                />
-              </div>
-            ))}
-            {property.photos.length > 4 && (
-              <div className="photo-thumb more-photos" onClick={() => setShowLightbox(true)}>
-                <span>+{property.photos.length - 4} more</span>
-              </div>
-            )}
+
+          {/* Thumbnail Grid (1 to 4) */}
+          <div className="photo-thumbs-grid">
+            {property.photos.slice(1, 5).map((photo, i) => {
+              const photoIdx = i + 1;
+              return (
+                <div
+                  key={photoIdx}
+                  className="photo-thumb"
+                  onClick={() => { setMainPhoto(photoIdx); setShowLightbox(true); }}
+                >
+                  <img
+                    src={getOptimizedUrl(photo, 600)}
+                    alt={`Photo ${photoIdx + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => { e.target.src = `https://picsum.photos/seed/${id}-${photoIdx}/600/400`; }}
+                  />
+                  {photoIdx === 4 && property.photos.length > 5 && (
+                    <div className="photo-thumb more-photos" onClick={(e) => { e.stopPropagation(); setShowLightbox(true); }}>
+                      <span>+{property.photos.length - 5} more</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -168,12 +186,12 @@ export default function PropertyDetailPage() {
               </button>
               
               <img 
-                src={property.photos[mainPhoto]} 
+                src={getOptimizedUrl(property.photos[mainPhoto], 1600)} 
                 alt="Fullscreen view" 
                 loading="lazy"
                 decoding="async"
                 style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
-                onError={(e) => { e.target.src = `https://picsum.photos/seed/${id}-${mainPhoto}/1200/800`; }}
+                onError={(e) => { e.target.src = `https://picsum.photos/seed/${id}-${mainPhoto}/1600/1000`; }}
               />
 
               <button 
