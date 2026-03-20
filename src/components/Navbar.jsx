@@ -124,12 +124,7 @@ export default function Navbar() {
       <div className="navbar-inner">
         {/* Logo */}
         <Link to="/" className="navbar-logo">
-          <svg viewBox="0 0 32 32" className="logo-svg" aria-label="Community Project logo">
-            <path
-              d="M16 1c2.008 0 3.463.963 4.751 3.269l.533 1.025c1.954 3.83 6.114 12.54 7.1 14.836l.145.353c.667 1.592.985 2.773.985 3.842 0 3.176-2.485 5.675-5.487 5.675-.785 0-1.546-.167-2.239-.447l-.203-.087c-.962-.4-1.959-.616-2.585-.616-.626 0-1.623.215-2.585.616l-.203.087A5.281 5.281 0 0 1 14.013 30C11.01 30 8.526 27.5 8.526 24.325c0-1.069.318-2.25.985-3.842l.145-.353c.985-2.295 5.146-11.005 7.1-14.836l.533-1.025C18.537 1.963 19.992 1 22 1h-6z"
-              fill="var(--color-brand)"
-            />
-          </svg>
+          <img src="/logo.png" alt="Community Logo" className="logo-img" />
           <span className="logo-text">community</span>
         </Link>
 

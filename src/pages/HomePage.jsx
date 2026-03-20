@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../data/properties";
+import * as LucideIcons from "lucide-react";
 import { properties } from "../data/properties";
 import PropertyCard from "../components/PropertyCard";
+import Testimonials from "../components/Testimonials";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import "react-date-range/dist/styles.css";
@@ -12,6 +14,8 @@ import "./HomePage.css";
 export default function HomePage() {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("trending");
+  const [displayCategory, setDisplayCategory] = useState("trending");
+  const [isAnimating, setIsAnimating] = useState(false);
   const [location, setLocation] = useState("");
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
@@ -48,10 +52,20 @@ export default function HomePage() {
     return () => document.removeEventListener("mousedown", handler);
   }, [showCalendar]);
 
+  const handleCategoryChange = (newCat) => {
+    if (newCat === activeCategory) return;
+    setActiveCategory(newCat);
+    setIsAnimating(true);
+    setTimeout(() => {
+      setDisplayCategory(newCat);
+      setIsAnimating(false);
+    }, 300);
+  };
+
   const filteredProperties =
-    activeCategory === "all"
+    displayCategory === "all"
       ? properties
-      : properties.filter((p) => p.category.toLowerCase() === activeCategory.toLowerCase());
+      : properties.filter((p) => p.category.toLowerCase() === displayCategory.toLowerCase());
 
   // Scroll reveal animation with IntersectionObserver
   useEffect(() => {
@@ -79,7 +93,7 @@ export default function HomePage() {
       clearTimeout(timer);
       observer.disconnect();
     };
-  }, [activeCategory]);
+  }, [displayCategory]);
 
   const handleHeroSearch = (e) => {
     e.preventDefault();
@@ -193,16 +207,21 @@ export default function HomePage() {
       <section className="categories-section">
         <div className="container">
           <div className="categories-scroll">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                className={`category-btn ${activeCategory === cat.id ? "active" : ""}`}
-                onClick={() => setActiveCategory(cat.id)}
-              >
-                <span className="category-icon">{cat.icon}</span>
-                <span className="category-label">{cat.label}</span>
-              </button>
-            ))}
+            {categories.map((cat) => {
+              const IconComponent = LucideIcons[cat.iconName] || LucideIcons.HelpCircle;
+              return (
+                <button
+                  key={cat.id}
+                  className={`category-btn ${activeCategory === cat.id ? "active" : ""}`}
+                  onClick={() => handleCategoryChange(cat.id)}
+                >
+                  <span className="category-icon">
+                    <IconComponent size={24} strokeWidth={1.5} />
+                  </span>
+                  <span className="category-label">{cat.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -225,7 +244,7 @@ export default function HomePage() {
           </div>
 
           {filteredProperties.length > 0 ? (
-            <div className="properties-grid reveal-stagger">
+            <div className={`properties-grid reveal-stagger ${isAnimating ? "fade-slide-out" : ""}`}>
               {filteredProperties.map((property, index) => (
                 <div key={property.id} className="reveal" style={{ "--reveal-index": index }}>
                   <PropertyCard property={property} priority={index < 4} />
@@ -244,10 +263,12 @@ export default function HomePage() {
         </div>
       </section>
 
+      <Testimonials />
+
       {/* CTA Banner */}
       <section className="cta-section">
         <div className="container">
-          <div className="cta-card reveal">
+          <div className="cta-card">
             <div className="cta-content">
               <h2 className="cta-title">Earn money as a host</h2>
               <p className="cta-desc">

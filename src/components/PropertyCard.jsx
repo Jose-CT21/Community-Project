@@ -8,6 +8,27 @@ export default function PropertyCard({ property, priority = false }) {
   const [currentPhoto, setCurrentPhoto] = useState(0);
   const isFav = favorites.includes(property.id);
 
+  const getDotsTranslate = (current, total) => {
+    if (total <= 5) return 0;
+    // Track has 10px padding. Wrapper is 66px.
+    // To center index 'current' in a 5-dot window:
+    const shift = Math.max(0, Math.min(current - 2, total - 5));
+    return -(shift * 10);
+  };
+
+  const getDotSizeClass = (idx, current, total) => {
+    if (idx === current) return "active";
+    if (total <= 5) return "";
+    
+    const visibleStart = Math.max(0, Math.min(current - 2, total - 5));
+    const visibleEnd = visibleStart + 4;
+    
+    if (idx < visibleStart || idx > visibleEnd) return "hidden";
+    if (idx === visibleStart && visibleStart > 0) return "small";
+    if (idx === visibleEnd && visibleEnd < total - 1) return "small";
+    return "";
+  };
+
   const prevPhoto = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -30,17 +51,19 @@ export default function PropertyCard({ property, priority = false }) {
     <Link to={`/property/${property.id}`} className="property-card">
       {/* Image area */}
       <div className="property-card-img-wrapper">
-        <img
-          src={property.photos[currentPhoto]}
-          alt={property.title}
-          className="property-card-img"
-          loading={priority ? "eager" : "lazy"}
-          decoding={priority ? "sync" : "async"}
-          fetchpriority={priority ? "high" : "auto"}
-          onError={(e) => {
-            e.target.src = `https://picsum.photos/seed/${property.id}-${currentPhoto}/400/300`;
-          }}
-        />
+        {property.photos.map((photo, i) => (
+          <img
+            key={i}
+            src={photo}
+            alt={`${property.title} - ${i + 1}`}
+            className={`property-card-img ${i === currentPhoto ? "active" : ""}`}
+            loading={priority && i === 0 ? "eager" : "lazy"}
+            decoding={priority && i === 0 ? "sync" : "async"}
+            onError={(e) => {
+              e.target.src = `https://picsum.photos/seed/${property.id}-${i}/400/300`;
+            }}
+          />
+        ))}
 
         {/* Favorite button */}
         <button
@@ -67,11 +90,21 @@ export default function PropertyCard({ property, priority = false }) {
               </svg>
             </button>
 
-            {/* Dots */}
-            <div className="photo-dots">
-              {property.photos.map((_, i) => (
-                <span key={i} className={`photo-dot ${i === currentPhoto ? "active" : ""}`} />
-              ))}
+            {/* Sliding Dots Carousel */}
+            <div className="photo-dots-wrapper">
+              <div 
+                className="photo-dots-track"
+                style={{
+                  transform: `translateX(${getDotsTranslate(currentPhoto, property.photos.length)}px)`
+                }}
+              >
+                {property.photos.map((_, i) => (
+                  <span 
+                    key={i} 
+                    className={`photo-dot ${getDotSizeClass(i, currentPhoto, property.photos.length)}`} 
+                  />
+                ))}
+              </div>
             </div>
           </>
         )}
@@ -82,27 +115,40 @@ export default function PropertyCard({ property, priority = false }) {
         )}
       </div>
 
-      {/* Card info */}
-      <div className="property-card-info">
-        <div className="property-card-row">
+      {/* Card Content Right Side */}
+      <div className="property-card-content">
+        <div className="property-card-body">
           <h3 className="property-card-title">
-            {property.location.city}, {property.location.country}
+            {property.title}
           </h3>
-          <div className="property-card-rating">
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="var(--color-text-primary)">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-            </svg>
-            {property.rating}
+          <p className="property-card-desc">
+            {property.description || `Beautiful ${property.type.toLowerCase()} in ${property.location.city}, ${property.location.country}.`}
+          </p>
+        </div>
+        
+        <div className="property-card-footer">
+          <div className="footer-left">
+            <div className="property-card-price">
+              <strong>${property.price}</strong> <span className="night-label">per person*</span>
+            </div>
+            <div className="property-card-rating">
+              <span className="stars-green">
+                {[...Array(5)].map((_, i) => (
+                   <svg key={i} viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                   </svg>
+                ))}
+              </span>
+              <span className="reviews-text">{property.reviewCount || 28} reviews</span>
+            </div>
+            <div className="disclaimer-text">*Prices may vary depending on selected date.</div>
+          </div>
+          <div className="footer-right">
+            <button className="book-btn" onClick={(e) => { e.preventDefault(); /* Hook up to booking later */ }}>Book now</button>
           </div>
         </div>
-        <p className="property-card-type">{property.type}</p>
-        <p className="property-card-meta">
-          {property.bedrooms} bedroom{property.bedrooms !== 1 ? "s" : ""} · {property.beds} bed{property.beds !== 1 ? "s" : ""}
-        </p>
-        <p className="property-card-price">
-          <strong>{formatPrice(property.price)}</strong> <span className="night-label">/ night</span>
-        </p>
       </div>
     </Link>
   );
 }
+// Trigger HMR update

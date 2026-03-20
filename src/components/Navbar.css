@@ -32,9 +32,10 @@
   flex-shrink: 0;
 }
 
-.logo-svg {
-  width: 30px;
-  height: 30px;
+.logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
 }
 
 .logo-text {

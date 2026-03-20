@@ -2,21 +2,21 @@
 
 /* ==================== DESIGN TOKENS ==================== */
 :root {
-  /* Brand Colors */
-  --color-brand: #FF385C;
-  --color-brand-dark: #E31C5F;
-  --color-brand-light: #FF748B;
-  --color-brand-bg: #FFF0F2;
+  /* Brand Colors - High Contrast Terracotta */
+  --color-brand: #b07d62; 
+  --color-brand-dark: #8e634e;
+  --color-brand-light: #d6b8a8;
+  --color-brand-bg: #fdfaf8;
 
   /* Neutrals */
-  --color-text-primary: #222222;
-  --color-text-secondary: #717171;
-  --color-text-tertiary: #B0B0B0;
-  --color-border: #DDDDDD;
-  --color-border-light: #EBEBEB;
-  --color-bg: #FFFFFF;
-  --color-bg-secondary: #F7F7F7;
-  --color-bg-hover: #F0F0F0;
+  --color-text-primary: #4f5754; /* Deep Charcoal/Sage */
+  --color-text-secondary: #7a827e;
+  --color-text-tertiary: #aeb5b2;
+  --color-border: #cbd3d0;
+  --color-border-light: #dae0de;
+  --color-bg: #dce2e0; /* Sage Green background */
+  --color-bg-secondary: #ffffff;
+  --color-bg-hover: #cbd3d0;
 
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.08); /* Softer */
@@ -46,7 +46,8 @@
   --radius-full: 9999px;
 
   /* Typography */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-heading: 'Playfair Display', serif;
   --font-size-xs: 11px;
   --font-size-sm: 13px;
   --font-size-base: 14px;
@@ -96,6 +97,12 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6, .hero-title, .cta-title, .section-title {
+  font-family: var(--font-family-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 img {
@@ -159,7 +166,7 @@ ul, ol {
   background: var(--color-brand-dark);
   border-color: var(--color-brand-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 56, 92, 0.35);
+  box-shadow: 0 4px 12px rgba(79, 87, 84, 0.15);
 }
 
 .btn-outline {
@@ -363,7 +370,7 @@ ul, ol {
 /* ==================== GRIDS ==================== */
 .properties-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 450px), 1fr));
   gap: var(--space-6);
 }
 
@@ -391,7 +398,7 @@ ul, ol {
     padding: 0 var(--space-4);
   }
   .properties-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: var(--space-4);
   }
   .page-wrapper {

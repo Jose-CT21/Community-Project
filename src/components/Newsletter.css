@@ -1,0 +1,130 @@
+.newsletter-section {
+  background-color: var(--color-text-primary); /* Deep charcoal/sage */
+  color: white;
+  padding: var(--space-10) 0;
+  margin-top: var(--space-12);
+}
+
+.newsletter-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.newsletter-left {
+  flex: 1;
+  min-width: 300px;
+}
+
+.newsletter-title {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-2xl);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.newsletter-desc {
+  font-size: var(--font-size-md);
+  margin-bottom: var(--space-6);
+  opacity: 0.9;
+}
+
+.newsletter-form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.newsletter-input-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex: 1;
+  min-width: 280px;
+}
+
+.newsletter-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.newsletter-input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 4px;
+  border: none;
+  background: white;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  min-width: 150px;
+}
+
+.newsletter-btn {
+  border-radius: 4px;
+  padding: 12px 24px;
+  background-color: var(--color-brand);
+  border-color: var(--color-brand);
+  font-weight: 600;
+  color: white;
+}
+
+.newsletter-btn:hover {
+  background-color: var(--color-brand-dark);
+}
+
+.newsletter-badges {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.newsletter-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  text-align: center;
+  padding: 12px;
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.newsletter-badge svg {
+  margin-bottom: 6px;
+}
+
+.newsletter-badge strong {
+  font-size: 14px;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .newsletter-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .newsletter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .newsletter-input-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  .newsletter-input {
+    width: 100%;
+  }
+  .newsletter-badges {
+    align-self: center;
+    margin-top: var(--space-6);
+  }
+}
