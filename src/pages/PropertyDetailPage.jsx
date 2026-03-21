@@ -347,6 +347,24 @@ export default function PropertyDetailPage() {
 
             <hr className="divider" />
 
+            {/* Location (Map) */}
+            {property.mapUrl && (
+              <section className="detail-section">
+                <h3 className="detail-section-title">Ubicación</h3>
+                <div style={{ width: "100%", height: "400px", borderRadius: "16px", overflow: "hidden", marginTop: "16px" }}>
+                  <iframe 
+                    src={property.mapUrl} 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen="" 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
+              </section>
+            )}
+
             {/* Reviews */}
             <section className="detail-section">
               <div className="reviews-header">

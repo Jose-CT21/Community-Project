@@ -1,0 +1,53 @@
+/* Bottom Native App-style Navigation */
+
+.bottom-nav {
+  display: none; /* Hidden on desktop */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-top: 1px solid var(--color-border-light);
+  z-index: 99;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 12px;
+  /* Extra padding for safe area logic on mobile devices (e.g. iOS home bar) */
+  padding-bottom: max(8px, env(safe-area-inset-bottom)); 
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--color-text-tertiary); /* De-emphasized state */
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 600;
+  width: 64px;
+  transition: color var(--transition-fast);
+}
+
+.bottom-nav-item svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2px;
+}
+
+.bottom-nav-item.active {
+  color: var(--color-brand);
+}
+
+.bottom-nav-item:hover {
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 900px) {
+  .bottom-nav {
+    display: flex;
+  }
+}

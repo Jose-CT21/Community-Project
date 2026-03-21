@@ -148,7 +148,19 @@ export default function BookingPage() {
       <div className="booking-page-grid">
         {/* Left: Payment form */}
         <div className="booking-form-section">
-          <h1 className="booking-page-title">Confirm and pay</h1>
+          <div className="booking-page-header" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+            <button 
+              className="btn-icon" 
+              onClick={() => navigate(-1)} 
+              aria-label="Go back"
+              style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border-light)' }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <h1 className="booking-page-title" style={{ margin: 0 }}>Confirm and pay</h1>
+          </div>
 
           {/* Trip details */}
           <div className="booking-trip-details">

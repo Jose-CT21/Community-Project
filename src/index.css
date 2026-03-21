@@ -394,6 +394,28 @@ ul, ol {
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
+  :root {
+    /* Compact spacing */
+    --space-3: 8px;
+    --space-4: 12px;
+    --space-5: 16px;
+    --space-6: 20px;
+    --space-8: 24px;
+    --space-10: 32px;
+    --space-12: 40px;
+    
+    /* Compact typography */
+    --font-size-base: 13px;
+    --font-size-md: 14px;
+    --font-size-lg: 16px;
+    --font-size-xl: 18px;
+    --font-size-2xl: 22px;
+    --font-size-3xl: 26px;
+    --font-size-4xl: 32px;
+    
+    --navbar-height-mobile: 56px;
+  }
+
   .container {
     padding: 0 var(--space-4);
   }
@@ -403,6 +425,7 @@ ul, ol {
   }
   .page-wrapper {
     padding-top: var(--navbar-height-mobile);
+    padding-bottom: 72px; /* Space for BottomNav */
   }
 }
 

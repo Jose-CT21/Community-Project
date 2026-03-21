@@ -71,7 +71,7 @@ export default function HostDashboardPage() {
                 <div className="listing-price">${listing.price}<span>/night</span></div>
                 <div className="listing-actions">
                   <button className="btn btn-outline btn-sm" onClick={() => navigate(`/property/${listing.id}`)}>View</button>
-                  <button className="btn btn-outline btn-sm">Edit</button>
+                  <button className="btn btn-outline btn-sm" onClick={() => navigate(`/host/edit/${listing.id}`)}>Edit</button>
                 </div>
               </div>
             ))}

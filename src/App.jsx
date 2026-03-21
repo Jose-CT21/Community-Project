@@ -3,6 +3,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { AppProvider } from "./context/AppContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import BottomNav from "./components/BottomNav";
 import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
@@ -11,6 +12,7 @@ import RegisterPage from "./pages/RegisterPage";
 import BookingPage from "./pages/BookingPage";
 import MyTripsPage from "./pages/MyTripsPage";
 import HostDashboardPage from "./pages/HostDashboardPage";
+import HostEditPage from "./pages/HostEditPage";
 import ProfilePage from "./pages/ProfilePage";
 
 export default function App() {
@@ -28,6 +30,8 @@ export default function App() {
             <Route path="/booking/:id" element={<BookingPage />} />
             <Route path="/bookings" element={<MyTripsPage />} />
             <Route path="/host/dashboard" element={<HostDashboardPage />} />
+            <Route path="/host/edit/:id" element={<HostEditPage />} />
+            <Route path="/host/new-listing" element={<HostEditPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route
               path="*"
@@ -41,6 +45,7 @@ export default function App() {
             />
           </Routes>
           <Footer />
+          <BottomNav />
         </AppProvider>
       </AuthProvider>
     </BrowserRouter>

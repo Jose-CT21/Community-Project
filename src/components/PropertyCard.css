@@ -291,13 +291,28 @@
   .property-card {
     flex-direction: column;
     height: auto;
+    border-radius: var(--radius-lg);
   }
   .property-card-img-wrapper {
     width: 100%;
     height: auto;
-    padding-bottom: 66.66%; /* switch back to aspect ratio trick */
+    padding-bottom: 56.25%; /* 16:9 Aspect ratio to save vertical space */
   }
   .property-card-body, .property-card-footer {
-    padding: 16px;
+    padding: 12px;
+  }
+  .property-card-title {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .property-card-desc {
+    font-size: 13px;
+  }
+  .property-card-price {
+    font-size: 16px;
+  }
+  .book-btn {
+    padding: 6px 12px;
+    font-size: 13px;
   }
 }

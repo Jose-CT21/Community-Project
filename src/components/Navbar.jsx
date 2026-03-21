@@ -16,7 +16,6 @@ export default function Navbar() {
   const currentPath = useLocation().pathname;
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const menuRef = useRef(null);
@@ -285,6 +284,9 @@ export default function Navbar() {
                     {role === "host" && (
                       <Link to="/host/dashboard" className="dropdown-item" onClick={() => setMenuOpen(false)}>Hosting Dashboard</Link>
                     )}
+                    {role === "guest" && (
+                      <Link to="/host/dashboard" className="dropdown-item" onClick={() => { setMenuOpen(false); toggleRole(); }}>Start hosting</Link>
+                    )}
                     <hr className="dropdown-divider" />
                     <button className="dropdown-item" onClick={handleLogout}>Log out</button>
                   </>
@@ -300,53 +302,17 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Hamburger */}
-          <button
-            className="mobile-menu-btn"
-            onClick={() => setMobileNavOpen((o) => !o)}
-            aria-label="Toggle mobile nav"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {mobileNavOpen ? (
-                <>
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </>
-              ) : (
-                <>
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <line x1="3" y1="12" x2="21" y2="12" />
-                  <line x1="3" y1="18" x2="21" y2="18" />
-                </>
-              )}
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Nav Drawer */}
-      {mobileNavOpen && (
-        <div className="mobile-nav">
-          <button className="mobile-nav-item" onClick={() => { navigate("/search"); setMobileNavOpen(false); }}>
-            🔍 Search stays
-          </button>
-          <button className="mobile-nav-item" onClick={() => { toggleRole(); setMobileNavOpen(false); }}>
-            🏠 {role === "guest" ? "Switch to Hosting" : "Switch to Traveling"}
-          </button>
-          {user ? (
-            <>
-              <Link to="/profile" className="mobile-nav-item" onClick={() => setMobileNavOpen(false)}>👤 Account</Link>
-              <Link to="/bookings" className="mobile-nav-item" onClick={() => setMobileNavOpen(false)}>🧳 My Trips</Link>
-              <button className="mobile-nav-item" onClick={() => { handleLogout(); setMobileNavOpen(false); }}>🚪 Log out</button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="mobile-nav-item" onClick={() => setMobileNavOpen(false)}>🔑 Log in</Link>
-              <Link to="/register" className="mobile-nav-item" onClick={() => setMobileNavOpen(false)}>✨ Sign up</Link>
-            </>
+          {/* Mobile Search Button (Visible only on mobile) */}
+          {currentPath !== "/" && (
+            <button className="mobile-search-trigger md-hidden" onClick={() => setSearchExpanded(true)} aria-label="Search">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+            </button>
           )}
         </div>
-      )}
+      </div>
     </header>
   );
 }

@@ -5,6 +5,8 @@ import * as LucideIcons from "lucide-react";
 import { properties } from "../data/properties";
 import PropertyCard from "../components/PropertyCard";
 import Testimonials from "../components/Testimonials";
+import { useAuth } from "../context/AuthContext";
+import { useApp } from "../context/AppContext";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import "react-date-range/dist/styles.css";
@@ -13,8 +15,12 @@ import "./HomePage.css";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState("trending");
-  const [displayCategory, setDisplayCategory] = useState("trending");
+  const { user } = useAuth();
+  const { role } = useApp();
+  const isHosting = user && role === "host";
+  
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [displayCategory, setDisplayCategory] = useState("all");
   const [isAnimating, setIsAnimating] = useState(false);
   const [location, setLocation] = useState("");
   const [checkin, setCheckin] = useState("");
@@ -207,7 +213,7 @@ export default function HomePage() {
       <section className="categories-section">
         <div className="container">
           <div className="categories-scroll">
-            {categories.map((cat) => {
+            {[{ id: "all", label: "Todos", iconName: "Globe" }, ...categories].map((cat) => {
               const IconComponent = LucideIcons[cat.iconName] || LucideIcons.HelpCircle;
               return (
                 <button
@@ -232,14 +238,14 @@ export default function HomePage() {
           <div className="section-header reveal">
             <h2 className="section-title">
               {filteredProperties.length > 0
-                ? `${filteredProperties.length} ${activeCategory !== "all" ? categories.find((c) => c.id === activeCategory)?.label : "All"} stays`
-                : "No stays in this category yet"}
+                ? `${filteredProperties.length} ${activeCategory !== "all" ? categories.find((c) => c.id === activeCategory)?.label : "aloja"}mientos`
+                : "No hay estancias en esta categoría aún"}
             </h2>
             <button
               className="btn btn-outline btn-sm"
               onClick={() => navigate("/search")}
             >
-              View all
+              Ver todos
             </button>
           </div>
 
@@ -270,12 +276,14 @@ export default function HomePage() {
         <div className="container">
           <div className="cta-card">
             <div className="cta-content">
-              <h2 className="cta-title">Earn money as a host</h2>
+              <h2 className="cta-title">{isHosting ? "Maneja tus alojamientos" : "Earn money as a host"}</h2>
               <p className="cta-desc">
-                Share your space and start earning. Join millions of hosts and connect with guests from around the world.
+                {isHosting 
+                  ? "Revisa tus reservas, ajusta tus precios y mantén tus anuncios actualizados para seguir creciendo."
+                  : "Share your space and start earning. Join millions of hosts and connect with guests from around the world."}
               </p>
               <button className="btn btn-brand btn-lg" onClick={() => navigate("/host/dashboard")}>
-                Start hosting
+                {isHosting ? "Ir al panel de control" : "Start hosting"}
               </button>
             </div>
             <div className="cta-image">
